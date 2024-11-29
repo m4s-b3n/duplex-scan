@@ -1,0 +1,9 @@
+---
+version: "3.9"
+
+services:
+  pdf_merger:
+    build: .
+    image: ghcr.io/m4s-b3n/duplex-scan:latest
+    ports:
+      - "5000:5000"
