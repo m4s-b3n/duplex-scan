@@ -1,0 +1,17 @@
+{
+  "name": "Ubuntu",
+  "image": "mcr.microsoft.com/devcontainers/base:noble",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "moby": true,
+      "installDockerBuildx": true,
+      "installDockerComposeSwitch": true,
+      "version": "latest",
+      "dockerDashComposeVersion": "latest"
+    },
+    "ghcr.io/devcontainers/features/python:1": {
+      "installTools": true,
+      "version": "3.12"
+    }
+  }
+}

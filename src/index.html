@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PDF Merger</title>
+  </head>
+
+  <body>
+    <h1>PDF Merger</h1>
+    <form id="pdf-form" enctype="multipart/form-data">
+      <label for="odd-pdf">Odd Pages PDF:</label>
+      <input
+        type="file"
+        id="odd-pdf"
+        name="odd_pdf"
+        accept="application/pdf"
+        required
+      /><br /><br />
+      <label for="even-pdf">Even Pages PDF:</label>
+      <input
+        type="file"
+        id="even-pdf"
+        name="even_pdf"
+        accept="application/pdf"
+        required
+      /><br /><br />
+      <button type="submit">Merge PDFs</button>
+    </form>
+    <br />
+    <a id="download-link" style="display: none">Download Merged PDF</a>
+
+    <script>
+      document
+        .getElementById("pdf-form")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+          const formData = new FormData();
+          formData.append(
+            "odd_pdf",
+            document.getElementById("odd-pdf").files[0],
+          );
+          formData.append(
+            "even_pdf",
+            document.getElementById("even-pdf").files[0],
+          );
+
+          const response = await fetch("/merge", {
+            method: "POST",
+            body: formData,
+          });
+
+          if (response.ok) {
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const downloadLink = document.createElement("a");
+            downloadLink.href = url;
+            downloadLink.download = "merged.pdf";
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+            window.URL.revokeObjectURL(url);
+          } else {
+            alert("Error merging PDFs");
+          }
+        });
+    </script>
+  </body>
+</html>
